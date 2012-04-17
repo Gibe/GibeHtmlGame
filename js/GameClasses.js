@@ -1,13 +1,24 @@
 function Square(type) {
   switch (type) {
     case "square":
-      this.image = "/images/square.jpg";
+      
+      this.imageReady = false;
+      this.image = new Image();
+      this.image.onload = function () {
+          this.imageReady = true;
+      };
+      this.image.src = "images/square.png";
       this.isAccessible = true;
-      break;
+    break;
     case "wall":
-      this.image = "/images/wall.jpg";
+      this.imageReady = false;
+      this.image = new Image();
+      this.image.onload = function () {
+          this.imageReady = true;
+      };
+      this.image.src = "images/wall.png";      
       this.isAccessible = false;
-      break;
+    break;
   }
   this.type = type;
   this.x = 0;
@@ -25,7 +36,7 @@ var mapSquares = [
   ['wall', 'wall', 'wall', 'wall', 'wall']
 ];
 
-var Map = {
+/*var Map = {
   squares: new Array(),
   load: function (squares) {
     for (var i = 0; i < squares.length; i++) {
@@ -37,6 +48,24 @@ var Map = {
     }
   },
   needsRefresh: true
+}*/
+
+function Map() {
+  this.squares = [];
+  this.load = function (sqs) {
+
+    for (var i = 0; i < sqs.length; i++) {
+      this.squares[i] = [];
+      for (var j = 0; j < sqs[i].length; j++) {
+        this.squares[i][j] = new Square(sqs[i][j]);
+        this.squares[i][j].x = i;
+        this.squares[i][j].y = j;
+      }
+    }
+    
+  }
+  
+  this.needsRefresh = true;
 }
 
 var game = {
@@ -63,6 +92,7 @@ window.requestAnimFrame = (function(){
 })();
 
 var canvas, context;
+var boardDrawReady = 0;
 
 init();
 animate();
@@ -78,9 +108,6 @@ function init() {
   if(document.body != null){
     document.body.appendChild( canvas );
   }
-  else{
-    alert('!');
-  }
 
 }
 
@@ -89,19 +116,22 @@ function animate() {
   draw();
 }
 
+
 function draw() {
-
-  var time = new Date().getTime() * 0.002;
-  var x = Math.sin( time ) * 96 + 128;
-  var y = Math.cos( time * 0.9 ) * 96 + 128;
-
-  context.fillStyle = 'rgb(245,245,245)';
-  context.fillRect( 0, 0, 255, 255 );
-
-  context.fillStyle = 'rgb(255,0,0)';
-  context.beginPath();
-  context.arc( x, y, 10, 0, Math.PI * 2, true );
-  context.closePath();
-  context.fill();
-
+/*
+  if(!boardDrawReady){
+    var map = new Map();
+    map.load(mapSquares);
+  
+    var i, j;
+    for(i=0; i<map.squares.length; i++){
+  
+      for(j=0; j<map.squares[i].length; j++){
+        context.drawImage(map.squares[i][j].image, j*48, i*48);
+      }
+    }
+  
+    boardDrawReady = 1;
+  }
+*/
 }
