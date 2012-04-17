@@ -100,8 +100,8 @@ animate();
 function init() {
 
   canvas = document.createElement( 'canvas' );
-  canvas.width = 256;
-  canvas.height = 256;
+  canvas.width = 48*5;
+  canvas.height = 48*8;
 
   context = canvas.getContext( '2d' );
 
@@ -118,7 +118,7 @@ function animate() {
 
 
 function draw() {
-/*
+
   if(!boardDrawReady){
     var map = new Map();
     map.load(mapSquares);
@@ -133,5 +133,5 @@ function draw() {
   
     boardDrawReady = 1;
   }
-*/
+
 }
